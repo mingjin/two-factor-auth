@@ -253,9 +253,15 @@ public class TimeBasedOneTimePasswordUtil {
 	 * @param secret
 	 *            Secret string that will be used when generating the current number.
 	 */
+//	public static String generateOtpAuthUrl(String keyId, String secret) {
+//		StringBuilder sb = new StringBuilder(64);
+//		addOtpAuthPart(keyId, secret, sb);
+//		return sb.toString();
+//	}
+
 	public static String generateOtpAuthUrl(String keyId, String secret) {
 		StringBuilder sb = new StringBuilder(64);
-		addOtpAuthPart(keyId, secret, sb);
+		sb.append("otpauth://totp/").append(keyId).append("?secret=").append(secret);
 		return sb.toString();
 	}
 

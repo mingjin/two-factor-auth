@@ -1,5 +1,13 @@
 package com.j256.twofactorauth;
 
+import net.glxn.qrgen.QRCode;
+import net.glxn.qrgen.image.ImageType;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 /**
  * Little test program to show how to use the TwoFactorAuthUtil utility class.
  * 
@@ -11,16 +19,21 @@ public class TwoFactorAuthExample {
 
 	public static void main(String[] args) throws Exception {
 
-		// String base32Secret = twoFactorAuthUtil.generateBase32Secret();
-		String base32Secret = "NY4A5CPJZ46LXZCP";
+		 String base32Secret = TimeBasedOneTimePasswordUtil.generateBase32Secret();
+//		String base32Secret = "NY4A5CPJZ46LXZCP";
 
 		System.out.println("secret = " + base32Secret);
 
 		// this is the name of the key which can be displayed by the authenticator program
 		String keyId = "user@j256.com";
 		// generate the QR code
-		System.out.println("Image url = " + TimeBasedOneTimePasswordUtil.qrImageUrl(keyId, base32Secret));
+//		System.out.println("Image url = " + TimeBasedOneTimePasswordUtil.qrImageUrl(keyId, base32Secret));
 		// we can display this image to the user to let them load it into their auth program
+
+		File image = new File("target/image.png");
+		final FileOutputStream stream = new FileOutputStream(image);
+		QRCode.from(TimeBasedOneTimePasswordUtil.generateOtpAuthUrl(keyId, base32Secret)).to(ImageType.PNG).writeTo(stream);
+		stream.close();
 
 		// we can use the code here and compare it against user input
 		String code = TimeBasedOneTimePasswordUtil.generateCurrentNumberString(base32Secret);
